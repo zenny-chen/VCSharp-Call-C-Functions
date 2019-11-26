@@ -1,0 +1,11 @@
+D:\VS-Projects\CSharpInvokeNativeCFunction\CSharpInvokeNativeCFunction\bin\Debug\netcoreapp3.0\CSharpInvokeNativeCFunction.exe
+D:\VS-Projects\CSharpInvokeNativeCFunction\CSharpInvokeNativeCFunction\bin\Debug\netcoreapp3.0\CSharpInvokeNativeCFunction.deps.json
+D:\VS-Projects\CSharpInvokeNativeCFunction\CSharpInvokeNativeCFunction\bin\Debug\netcoreapp3.0\CSharpInvokeNativeCFunction.runtimeconfig.json
+D:\VS-Projects\CSharpInvokeNativeCFunction\CSharpInvokeNativeCFunction\bin\Debug\netcoreapp3.0\CSharpInvokeNativeCFunction.runtimeconfig.dev.json
+D:\VS-Projects\CSharpInvokeNativeCFunction\CSharpInvokeNativeCFunction\bin\Debug\netcoreapp3.0\CSharpInvokeNativeCFunction.dll
+D:\VS-Projects\CSharpInvokeNativeCFunction\CSharpInvokeNativeCFunction\bin\Debug\netcoreapp3.0\CSharpInvokeNativeCFunction.pdb
+D:\VS-Projects\CSharpInvokeNativeCFunction\CSharpInvokeNativeCFunction\obj\Debug\netcoreapp3.0\CSharpInvokeNativeCFunction.csprojAssemblyReference.cache
+D:\VS-Projects\CSharpInvokeNativeCFunction\CSharpInvokeNativeCFunction\obj\Debug\netcoreapp3.0\CSharpInvokeNativeCFunction.AssemblyInfoInputs.cache
+D:\VS-Projects\CSharpInvokeNativeCFunction\CSharpInvokeNativeCFunction\obj\Debug\netcoreapp3.0\CSharpInvokeNativeCFunction.AssemblyInfo.cs
+D:\VS-Projects\CSharpInvokeNativeCFunction\CSharpInvokeNativeCFunction\obj\Debug\netcoreapp3.0\CSharpInvokeNativeCFunction.dll
+D:\VS-Projects\CSharpInvokeNativeCFunction\CSharpInvokeNativeCFunction\obj\Debug\netcoreapp3.0\CSharpInvokeNativeCFunction.pdb

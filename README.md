@@ -12,6 +12,19 @@ VC#调用C函数样例详解
  HANDLE | void \* | IntPtr, UIntPtr
  BYTE | unsigned char | Byte
  SHORT | short | Int16
- 
+ WORD | unsigned short | UInt16
+ INT | int | Int32
+ UINT | unsigned int | UInt32
+ LONG | long | Int32
+ BOOL | long | Boolean
+ DWORD | unsigned long | UInt32
+ ULONG | unsigned long | UInt32
+ CHAR | char | Char
+ LPSTR | char \* | String [in], StringBuilder [in, out]
+ LPCSTR | const char \* | String
+ LPWSTR | wchar_t \*, char16_t \* | String [in], StringBuilder [in, out]
+ LPCWSTR | const wchar_t \*, const char16_t \* | String
+ FLOAT | float | Single
+ DOUBLE | double | Double
 
-有了上述这张表之后，
+有了上述这张表之后，我们就能从容判断在C#端所声明的本地C函数的返回类型以及参数类型了，并且也能判断出如何合理地安排参数与返回类型来向本地C语言端输出/获取相关数据。

@@ -87,5 +87,37 @@ VC#调用C函数样例详解
 ![10](https://github.com/zenny-chen/VCSharp-Call-C-Functions/blob/master/images/10.JPG)
 
 <br />
+
 下面我们可以直接将本仓库中MyDLL项目中的dllmain.c代码复制黏贴到自己的C文件中，然后这里需要讲解几个点。
+
+我们先看一下“MyNativeCPrintLine”函数的声明：
+
+```
+/**
+ inputStr: 输入字符串
+ outputMaxLen: 存放输出字符串缓存的最大长度（字节数）
+ outputStr: 输出字符串
+ pOutLength: 输出outputStr输出字符串的实际长度
+ @return 输入字符串的长度
+*/
+__declspec(dllexport)
+int APIENTRY MyNativeCPrintLine(const char *inputStr, int outputMaxLen, void *outputStr, void *pOutLength)
+{
+    const char* srcStr = u8"This is a native C function!!";
+    const size_t srcLen = strlen(srcStr);
+
+    strcpy_s(outputStr, outputMaxLen, srcStr);
+    int* pLen = pOutLength;
+    if (pLen != NULL)
+        *pLen = (int)strlen(inputStr);
+
+    printf("The string from C# is: %s\n", inputStr);
+
+    return (int)srcLen;
+}
+```
+
+这里，`__declspec(dllexport)`是MSVC特有的声明符，指示当前所声明的函数作为DLL外部可见的函数。Windows系统的dll文件格式与类Unix系统的so文件格式有所不同。默认情况下，so动态链接库中所有外部符号都能被其他应用程序加载，除非显式使用私有（private）或内部（internal）可见性属性（visibility）进行声明。而Windows系统下的dll则不同，它需要显式指定当前的外部函数是否能被其他程序加载，这里就需要通过`__declspec(dllexport)`进行声明。
+
+这里的`APIENTRY`宏表示的是`__stdcall`函数调用约定，这对于x86_64模式下是不用去关心的，但考虑到通用性以及可移植性，我们这里还是把它保留比较好。在32位的x86模式下，`__stdcall`函数调用约定是Windows系统下公共的、可跨语言调用的一种函数调用约定，因此也被称为是API调用约定。
 

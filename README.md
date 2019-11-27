@@ -146,6 +146,8 @@ int APIENTRY MyNativeCPrintLine(const char *inputStr, int outputMaxLen, void *ou
 
 关于C语言中采用Unicode转义字符可参考这篇博文：[C11中的通用字符名（Universal Character Names）](https://www.jianshu.com/p/0edabe77a5a1)。
 
+代码编写完毕后，我们就可以点击工具栏中绿色小箭头进行构建，这里VS肯定会提示报错，称找到可执行文件，我们无需理睬。生成完之后，我们可以在当前工程项目目录中的`x64/Release/`找到一个dll和一个lib文件，我们可以先把这两个文件复制出来，待会儿要用。
+
 <br />
 
 接着，我们开始创建C#控制台项目工程。我们可以先关闭一下Visual Studio，然后再重新打开回到欢迎界面，点击“创建新项目”按钮，然后这里需要选择“控制台应用（.NET Core）”，并且底下标签栏含有“ **C#** ”的工程项目，如下图所示。
@@ -156,7 +158,9 @@ int APIENTRY MyNativeCPrintLine(const char *inputStr, int outputMaxLen, void *ou
 
 <br />
 
-创建完之后，我们可以将本仓库中“CSharpInvokeNativeCFunction”项目中的“Program.cs”文件中的内容复制到自己的C#源文件中。下面，我们开始详细讨论C#代码内容。
+创建完之后，我们可以将本仓库中“CSharpInvokeNativeCFunction”项目中的“Program.cs”文件中的内容复制到自己的C#源文件中。然后我们可以点击工具栏上的绿色小箭头编译运行一把。当然，这次编译不会有问题，但运行时会报错，由于找不到所需要的DLL文件。此时，我们可以将刚从DLL项目中所生成的dll文件和lib文件复制到当前C#工程项目的`bin/Debug/netcoreapp3.0/`目录下，此目录正好也存放着当前C#项目所生成的exe文件。再次运行就能顺利跑通了。
+
+下面，我们开始详细讨论C#代码内容。
 
 我们先看在C#端要对本地C函数进行调用的函数声明：
 
@@ -169,4 +173,8 @@ private static extern int MyNativeCPrintLine(string inputStr, int outputMaxLen, 
 private static extern bool MyNativeModifyString(int outputMaxlen, StringBuilder outputStr, IntPtr pOutStrLen);
 ```
 
-我们后面在 **Main** 静态方法中将要调用本地函数“MyNativeCPrintLine”和“MyNativeModifyString”，因此这里需要对这两个外部函数进行`DllImport`的外部声明。C#中的`DllImport`特性拥有非常丰富的字段、属性以及方法，详细信息可参考微软官方提供的[DllImportAttribute Class](https://docs.microsoft.com/en-us/dotnet/api/system.runtime.interopservices.dllimportattribute?redirectedfrom=MSDN&view=netframework-4.8)介绍。
+我们后面在 **Main** 静态方法中将要调用本地函数“MyNativeCPrintLine”和“MyNativeModifyString”，因此这里需要对这两个外部函数进行`DllImport`的外部声明。C#中的`DllImport`特性拥有非常丰富的字段、属性以及方法，详细信息可参考微软官方提供的[DllImportAttribute Class](https://docs.microsoft.com/en-us/dotnet/api/system.runtime.interopservices.dllimportattribute?redirectedfrom=MSDN&view=netframework-4.8)介绍。而我们这里则介绍最基本且常用的字段。
+
+DllImport的第一个参数总是为指明
+
+由于我们这里只在当前类调用“MyNativeCPrintLine”和“MyNativeModifyString”这两个函数，因此它们都用`private`访问权限，如果你有其他需求，也可以改用其他访问权限。

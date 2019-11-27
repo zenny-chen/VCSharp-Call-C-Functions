@@ -137,12 +137,12 @@ int APIENTRY MyNativeCPrintLine(const char *inputStr, int outputMaxLen, void *ou
 
 这里的`APIENTRY`宏表示的是`__stdcall`函数调用约定，这对于x86_64模式下是不用去关心的，但考虑到通用性以及可移植性，我们这里还是把它保留比较好。在32位的x86模式下，`__stdcall`函数调用约定是Windows系统下公共的、可跨语言调用的一种函数调用约定，因此也被称为是API调用约定。
 
-而在下面的“MyNativeModifyString”函数中，由于MSVC的字符编码集变换莫测，对于不同系统语言环境会采用不同的编码集，因此这里笔者直接对中文字符使用了Unicode转义字符。
+而在下面的“MyNativeModifyString”函数中，由于MSVC的字符编码集变幻莫测，对于不同系统语言环境会采用不同的编码集，因此这里笔者直接对中文字符使用了Unicode转义字符。
 
 ```c
     // 后面 \u 的几个转义字符分别为：“你好世界”
     const char16_t *utf16Str = u"This is a UTF-16 string from native code!! \u4f60\u597d\u4e16\u754c";
 ```
 
-关于C语言中采用Unicode转义字符可参考这篇博文：[C11中的通用字符名（Universal Character Names）](https://www.jianshu.com/p/0edabe77a5a1)
+关于C语言中采用Unicode转义字符可参考这篇博文：[C11中的通用字符名（Universal Character Names）](https://www.jianshu.com/p/0edabe77a5a1)。
 

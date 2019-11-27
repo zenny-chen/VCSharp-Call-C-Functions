@@ -92,7 +92,7 @@ VC#调用C函数样例详解
 
 我们先看一下“MyNativeCPrintLine”函数的声明：
 
-```c
+```cpp
 /**
  inputStr: 输入字符串
  outputMaxLen: 存放输出字符串缓存的最大长度（字节数）

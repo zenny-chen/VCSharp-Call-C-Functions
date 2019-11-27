@@ -77,5 +77,5 @@ VC#调用C函数样例详解
 
 ![10](https://github.com/zenny-chen/VCSharp-Call-C-Functions/blob/master/images/10.JPG)
 
-我们可以下面可以直接将本仓库中MyDLL项目中的dllmain.c代码复制黏贴到自己的C文件中，然后这里需要讲解几个点。
+下面我们可以直接将本仓库中MyDLL项目中的dllmain.c代码复制黏贴到自己的C文件中，然后这里需要讲解几个点。
 

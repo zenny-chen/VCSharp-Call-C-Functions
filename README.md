@@ -146,3 +146,27 @@ int APIENTRY MyNativeCPrintLine(const char *inputStr, int outputMaxLen, void *ou
 
 关于C语言中采用Unicode转义字符可参考这篇博文：[C11中的通用字符名（Universal Character Names）](https://www.jianshu.com/p/0edabe77a5a1)。
 
+<br />
+
+接着，我们开始创建C#控制台项目工程。我们可以先关闭一下Visual Studio，然后再重新打开回到欢迎界面，点击“创建新项目”按钮，然后这里需要选择“控制台应用（.NET Core）”，并且底下标签栏含有“ **C#** ”的工程项目，如下图所示。
+
+<br />
+
+![11](https://github.com/zenny-chen/VCSharp-Call-C-Functions/blob/master/images/11.JPG)
+
+<br />
+
+创建完之后，我们可以将本仓库中“CSharpInvokeNativeCFunction”项目中的“Program.cs”文件中的内容复制到自己的C#源文件中。下面，我们开始详细讨论C#代码内容。
+
+我们先看在C#端要对本地C函数进行调用的函数声明：
+
+```cs
+[DllImport("MyDLL.dll", EntryPoint = "MyNativeCPrintLine", CharSet = CharSet.Ansi)]
+private static extern int MyNativeCPrintLine(string inputStr, int outputMaxLen, IntPtr outputStr, IntPtr pOutLength);
+
+        
+[DllImport("MyDLL.dll", EntryPoint = "MyNativeModifyString", CharSet = CharSet.Unicode)]
+private static extern bool MyNativeModifyString(int outputMaxlen, StringBuilder outputStr, IntPtr pOutStrLen);
+```
+
+我们后面在 **Main** 静态方法中将要调用本地函数“MyNativeCPrintLine”和“MyNativeModifyString”，因此这里需要对这两个外部函数进行`DllImport`的外部声明。C#中的`DllImport`特性拥有非常丰富的字段、属性以及方法，详细信息可参考微软官方提供的[DllImportAttribute Class](https://docs.microsoft.com/en-us/dotnet/api/system.runtime.interopservices.dllimportattribute?redirectedfrom=MSDN&view=netframework-4.8)介绍。

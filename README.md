@@ -175,6 +175,6 @@ private static extern bool MyNativeModifyString(int outputMaxlen, StringBuilder 
 
 我们后面在 **Main** 静态方法中将要调用本地函数“MyNativeCPrintLine”和“MyNativeModifyString”，因此这里需要对这两个外部函数进行`DllImport`的外部声明。C#中的`DllImport`特性拥有非常丰富的字段、属性以及方法，详细信息可参考微软官方提供的[DllImportAttribute Class](https://docs.microsoft.com/en-us/dotnet/api/system.runtime.interopservices.dllimportattribute?redirectedfrom=MSDN&view=netframework-4.8)介绍。而我们这里则介绍最基本且常用的字段。
 
-DllImport的第一个参数总是为指明当前所要加载的dll文件名的字符串。后面的字段不需要特定次序。其中，`EntryPoint`指定当前所要加载本地代码的入口点，直接将它指定为所声明的C函数名即可。这个特性可使得.NET运行时可高效地定位所加载的必要代码，而无需一股脑地把所指定的动态链接库的内容全都加载进来。`CharSet`特性则指定当前本地函数所使用的字符串的编码格式。这个特性也非常重要，它灵活地给出了C#端字符串要为本地C函数提供怎样的字符编码接口。我们从本文一开始的类型映射表上可以看到，无论是`char*`还是`char16_t*`都能映射到C#端的`String`或`StringBuilder`类型，因此到底这俩类型提供给native怎样的编码操作，则可以通过此`CharSet`字段进行指定。
+DllImport的第一个参数总是为指明当前所要加载的dll文件名的字符串。后面的字段不需要特定次序。其中，`EntryPoint`指定当前所要加载本地代码的入口点，直接将它指定为所声明的C函数名即可。这个特性可使得.NET运行时可高效地定位所加载的必要代码，而无需一股脑地把所指定的动态链接库的内容全都加载进来。`CharSet`特性则指定当前本地函数所使用的字符串的编码格式。这个特性也非常重要，它灵活地给出了C#端字符串要为本地C函数提供怎样的字符编码接口。我们从本文一开始的类型映射表上可以看到，无论是`char*`还是`char16_t*`都能映射到C#端的`String`或`StringBuilder`类型，因此到底这俩类型提供给native怎样的编码操作，则可以通过此`CharSet`字段进行指定。其中，`CharSet.Ansi`表示使用ASCII或多字节编码格式，包括UTF-8；而`CharSet.Unicode`则表示使用双字节的UTF-16编码格式。由于在`MyNativeCPrintLine`函数实现中，我们用char类型去获取输入字符串内容，因此这里使用`CharSet.Ansi`字符编码；而在`MyNativeModifyString`函数中，我们需要向C#端输出16位的UTF-16字符串内容，因此需要使用`CharSet.Unicode`字符编码进行指定。
 
 由于我们这里只在当前类调用“MyNativeCPrintLine”和“MyNativeModifyString”这两个函数，因此它们都用`private`访问权限，如果你有其他需求，也可以改用其他访问权限。然后，我们可以通过本文一开始给出的类型映射表来观察C#端对本地C函数的声明中返回类型与参数类型的映射。

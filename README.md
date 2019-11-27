@@ -92,7 +92,7 @@ VC#调用C函数样例详解
 
 我们先看一下“MyNativeCPrintLine”函数的声明：
 
-```
+```c
 /**
  inputStr: 输入字符串
  outputMaxLen: 存放输出字符串缓存的最大长度（字节数）
@@ -102,19 +102,6 @@ VC#调用C函数样例详解
 */
 __declspec(dllexport)
 int APIENTRY MyNativeCPrintLine(const char *inputStr, int outputMaxLen, void *outputStr, void *pOutLength)
-{
-    const char* srcStr = u8"This is a native C function!!";
-    const size_t srcLen = strlen(srcStr);
-
-    strcpy_s(outputStr, outputMaxLen, srcStr);
-    int* pLen = pOutLength;
-    if (pLen != NULL)
-        *pLen = (int)strlen(inputStr);
-
-    printf("The string from C# is: %s\n", inputStr);
-
-    return (int)srcLen;
-}
 ```
 
 这里，`__declspec(dllexport)`是MSVC特有的声明符，指示当前所声明的函数作为DLL外部可见的函数。Windows系统的dll文件格式与类Unix系统的so文件格式有所不同。默认情况下，so动态链接库中所有外部符号都能被其他应用程序加载，除非显式使用私有（private）或内部（internal）可见性属性（visibility）进行声明。而Windows系统下的dll则不同，它需要显式指定当前的外部函数是否能被其他程序加载，这里就需要通过`__declspec(dllexport)`进行声明。

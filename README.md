@@ -33,4 +33,8 @@ VC#调用C函数样例详解
 
 本仓库提供了两个工程项目，上面那个“CSharpInvokeNativeCFunction”是C#工程，下面那个“MyDLL”则是基于C语言的DLL工程，各位可以直接拿来使用。这里考虑到有些新手对Visual Studio用得可能不是很习惯，因此这里笔者将详细地描述DLL工程的创建过程。
 
-我们首先在Windows开始菜单中找到Visual Studio Installer，打开它。
+我们首先在Windows开始菜单中找到Visual Studio Installer，打开它，如下图所示。
+
+![1](https://github.com/zenny-chen/VCSharp-Call-C-Functions/blob/master/images/1.JPG)
+
+点击“修复”按钮之后，我们进入到插件选择界面。这里我们选择Windows下的三个

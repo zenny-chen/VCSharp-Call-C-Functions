@@ -46,3 +46,19 @@ VC#调用C函数样例详解
 ![3](https://github.com/zenny-chen/VCSharp-Call-C-Functions/blob/master/images/3.JPG)
 
 全都选完之后，我们点击右下角的“下载安装”即可。完成安装之后，我们打开Visual Studio 2019，来到欢迎界面。点击右侧“开始使用”下面的“创建新项目”，如下图所示。
+
+![4](https://github.com/zenny-chen/VCSharp-Call-C-Functions/blob/master/images/4.JPG)
+
+随后，在右侧栏仔细寻找“**动态链接库（DLL）**”，并且底下标签分别有：**C++**、 **Windows**、 **库**，如下图所示：
+
+![5](https://github.com/zenny-chen/VCSharp-Call-C-Functions/blob/master/images/5.JPG)
+
+点击“下一步”按钮，开始设置项目名与目录，如下图所示。
+
+![6](https://github.com/zenny-chen/VCSharp-Call-C-Functions/blob/master/images/6.JPG)
+
+最后点击“创建按钮”，Visual Studio将会把新建的项目创建在指定的目录上，并立即打开默认初始的C++文件。
+
+由于我们这里并不需要臃肿不堪的C艹，而只需用C即可完成任务，因此我们这里先将默认生成的dllmain.cpp文件从项目中移除出去，如下图所示。
+
+

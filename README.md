@@ -37,4 +37,12 @@ VC#调用C函数样例详解
 
 ![1](https://github.com/zenny-chen/VCSharp-Call-C-Functions/blob/master/images/1.JPG)
 
-点击“修复”按钮之后，我们进入到插件选择界面。这里我们选择Windows下的三个
+点击“修改”按钮之后，我们进入到插件选择界面。这里我们选择Windows下的三套组件，如下图所示。
+
+![2](https://github.com/zenny-chen/VCSharp-Call-C-Functions/blob/master/images/2.JPG)
+
+最后，如果我们需要在本地端使用Clang编译工具链的话，可以在右侧栏，找到“使用C++的桌面开发”一栏，展开，然后勾选上“适用于Windows的C++ Clang工具”，如下图所示。这可使得我们使用同时兼容于GNU语法扩展以及Windows独有语法扩展的C语言！
+
+![3](https://github.com/zenny-chen/VCSharp-Call-C-Functions/blob/master/images/3.JPG)
+
+全都选完之后，我们点击右下角的“下载安装”即可。完成安装之后，我们打开Visual Studio 2019，来到欢迎界面。点击右侧“开始使用”下面的“创建新项目”，如下图所示。

@@ -178,3 +178,32 @@ private static extern bool MyNativeModifyString(int outputMaxlen, StringBuilder 
 DllImport的第一个参数总是为指明当前所要加载的dll文件名的字符串。后面的字段不需要特定次序。其中，`EntryPoint`指定当前所要加载本地代码的入口点，直接将它指定为所声明的C函数名即可。这个特性可使得.NET运行时可高效地定位所加载的必要代码，而无需一股脑地把所指定的动态链接库的内容全都加载进来。`CharSet`特性则指定当前本地函数所使用的字符串的编码格式。这个特性也非常重要，它灵活地给出了C#端字符串要为本地C函数提供怎样的字符编码接口。我们从本文一开始的类型映射表上可以看到，无论是`char*`还是`char16_t*`都能映射到C#端的`String`或`StringBuilder`类型，因此到底这俩类型提供给native怎样的编码操作，则可以通过此`CharSet`字段进行指定。其中，`CharSet.Ansi`表示使用ASCII或多字节编码格式，包括UTF-8；而`CharSet.Unicode`则表示使用双字节的UTF-16编码格式。由于在“MyNativeCPrintLine”函数实现中，我们用char类型去获取输入字符串内容，因此这里使用`CharSet.Ansi`字符编码；而在“MyNativeModifyString”函数中，我们需要向C#端输出16位的UTF-16字符串内容，因此需要使用`CharSet.Unicode`字符编码进行指定。
 
 由于我们这里只在当前类调用“MyNativeCPrintLine”和“MyNativeModifyString”这两个函数，因此它们都用`private`访问权限，如果你有其他需求，也可以改用其他访问权限。然后，我们可以通过本文一开始给出的类型映射表来观察C#端对本地C函数的声明中返回类型与参数类型的映射。
+
+下面介绍一个比较重要的知识点：C#端如何从本地C函数端获取其输出数据。我们已经知道，C#端基于.NET运行时框架，其存储器模型都是受托管的，此时就需要有一种接口能向本地C函数暴露其平凡的存储器缓存地址。C#引入了`GCHandle`类，可以允许从一个不受托管的存储器访问一个受托管的一个对象，一个`GCHandle`对象也可称作为一个面向本地的（不受托管的）“指针”对象。通过调用`GCHandle.Alloc`方法，我们可以为指定的受托管的C#对象建立一个“指针”句柄。其第一个参数用于指定要给不受托管的本地端所暴露的C#端受托管的对象；第二个参数用于指定句柄类型，我们这里需要将它指定为`GCHandleType.Pinned`，因为我们后续需要获取该句柄所指向的本地存储器所存放的数据内容。如果一个`GCHandle`对象使用了`GCHandleType.Pinned`进行分配，那么它在用完后必须使用`Free()`成员方法进行显式释放。
+
+下面我们参考这几行代码：
+
+```cs
+var outputBytes = new sbyte[256];
+var outputCharBufferPtr = GCHandle.Alloc(outputBytes, GCHandleType.Pinned);
+var outLenPtr = GCHandle.Alloc(0, GCHandleType.Pinned);
+var len = MyNativeCPrintLine("Hello, world", outputBytes.Length, outputCharBufferPtr.AddrOfPinnedObject(), outLenPtr.AddrOfPinnedObject());
+
+outputCharBufferPtr.Free();
+```
+
+上述代码中，`outputCharBufferPtr.AddrOfPinnedObject()`即为`IntPtr`类型，表示当前句柄所指向的C#端托管对象给本地端所暴露的底层地址。这样在C语言端就能直接把字节流数据放到以此地址作为起始地址的存储器缓存中了。
+
+另外我们需要当心C#中传值传引用的问题。由于C#对于基本类型采取的是“传值”机制，因此如果我们就想对一个`int`数据或`float`数据的C#对象暴露给本地C函数端作为输出结果的话，我们不能单独建一个基本类型对象，然后将它传递给`GCHandle.Alloc`，因为它传递的是值，而不是该类型对象自身的引用，因此，所分配的GCHandle对象不会指向该基本类型对象。此时，我们可以直接用`GCHandle.Alloc`分配自己想要的基本数据类型的句柄，然后直接给出其地址即可。然后可以通过GCHandle对象的`Target`属性来获取它所指向的基本数据类型对象的值。我们可以参考以下代码：
+
+```cs
+var outLenPtr = GCHandle.Alloc(0, GCHandleType.Pinned);
+var len = MyNativeCPrintLine("Hello, world", outputBytes.Length, outputCharBufferPtr.AddrOfPinnedObject(), outLenPtr.AddrOfPinnedObject());
+
+Console.WriteLine("The input string length is: " + outLenPtr.Target);
+
+outLenPtr.Free();
+```
+
+如此一来，我们只要根据本文一开始所列出的类型映射表，我们就可以将任意数据结构在C#端与本地C语言端进行传递了，这样在接口协定上确实比JNI要简洁不少。
+

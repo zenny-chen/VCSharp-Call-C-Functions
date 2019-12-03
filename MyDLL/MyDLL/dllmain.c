@@ -28,7 +28,6 @@ int APIENTRY MyNativeCPrintLine(const char *inputStr, int outputMaxLen, void *ou
     return (int)srcLen;
 }
 
-
 /**
  outputMaxLen: 存放输出字符串缓存的最大长度（字节数）
  outputStr: 存放输出字符串的缓存
@@ -51,5 +50,26 @@ bool APIENTRY MyNativeModifyString(int outputMaxlen, char16_t* outputStr, int *p
         *pOutStrLen = (int)utf16StrLen;
 
     return true;
+}
+
+/** 定义全局的hold住C#端类方法的函数指针变量 */
+static void (APIENTRY *sCSharpMethodCallback)(int* array, int length);
+
+/**
+ 用于注册从C#端传递过来的回调类方法
+ */
+__declspec(dllexport)
+void APIENTRY RegisterCallbackMethods(void (APIENTRY *csharpMethod)(int* array, int length))
+{
+    sCSharpMethodCallback = csharpMethod;
+}
+
+/** 用于测试回调C#端类方法的C函数 */
+__declspec(dllexport)
+void APIENTRY TestCSharpMethodCallback(void)
+{
+    int a[] = { 1, 2, 3, 4, 5 };
+
+    sCSharpMethodCallback(a, 5);
 }
 

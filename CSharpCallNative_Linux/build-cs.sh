@@ -1,0 +1,1 @@
+mcs -unsafe Program.cs
